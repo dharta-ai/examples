@@ -1,10 +1,11 @@
 # Karta examples
 
-Runnable, copy-pasteable examples for [Karta](https://karta.sh), in two registers:
+Runnable, copy-pasteable examples for [Karta](https://karta.sh), in four registers:
 
 - **`agents/`** - agents you publish on Karta (a native harness instruction file plus `karta.toml`, deployed with `git push karta main`).
 - **`artifacts/`** - Agent Apps that each produce one Artifact, ordered from a Markdown file to recursive child Agent Apps. These examples require an Artifact-capable Karta release.
 - **`integration/`** - Karta agents you embed in your own product (the widget, the headless client, and per-user history with verified identity).
+- **`templates/`** - repository layouts for teams building an Agent App as a product, including the surrounding web, API, data, and integration services.
 
 Every example runs against the **public product only** (`cdn.karta.sh`, `agent.karta.sh`, and the published npm SDKs). None of them reference an internal service, so each one breaks only in ways a customer would also hit - and each one runs on a plain `git clone`.
 
@@ -28,6 +29,7 @@ Scaffolding. Examples are landing incrementally per [RFC 0020](https://github.co
 | Stream an agent into your page's own textbox + content area | `integration/custom-webpage` | anonymous |
 | Give every logged-in user their own agent inside your custom DOM | `integration/verified-identity-inline` | verified |
 | Embed the hosted widget for signed-in users, including step-up refresh | `integration/verified-identity-widget` | verified + step-up |
+| Structure a product company around an embedded Agent App | `templates/cinderlane-crm` | verified |
 
 ## Secrets
 

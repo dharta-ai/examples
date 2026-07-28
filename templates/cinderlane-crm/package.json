@@ -1,0 +1,12 @@
+{
+  "name": "cinderlane-crm",
+  "version": "0.0.0",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "check": "node scripts/check-template.mjs"
+  }
+}
