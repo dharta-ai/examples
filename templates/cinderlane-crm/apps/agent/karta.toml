@@ -1,0 +1,41 @@
+name = "cinderlane-crm-agent"
+deploy = true
+
+[harness]
+type = "codex-cli"
+
+[artifacts]
+manifest = ".karta/artifacts.json"
+
+[artifacts.kinds.account-plan]
+renderer = "builtin.markdown"
+schema_version = 1
+portability = "forkable"
+allowed_render_paths = ["outputs/account-plans/**"]
+allowed_evidence_paths = []
+allowed_provenance_paths = []
+allowed_continuation_paths = ["outputs/account-plans/**"]
+max_share_bytes = 5000000
+publish_audiences = ["organization", "named"]
+
+[artifacts.kinds.battlecard]
+renderer = "builtin.markdown"
+schema_version = 1
+portability = "explainable"
+allowed_render_paths = ["outputs/battlecards/**"]
+allowed_evidence_paths = []
+allowed_provenance_paths = []
+allowed_continuation_paths = []
+max_share_bytes = 5000000
+publish_audiences = ["organization", "named"]
+
+[artifacts.kinds.board-report]
+renderer = "builtin.markdown"
+schema_version = 1
+portability = "explainable"
+allowed_render_paths = ["outputs/board-reports/**"]
+allowed_evidence_paths = []
+allowed_provenance_paths = ["outputs/board-reports/**"]
+allowed_continuation_paths = []
+max_share_bytes = 25000000
+publish_audiences = ["organization", "named"]

@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "tools": [
+    {
+      "name": "search_accounts",
+      "mutation": false,
+      "required_scope": "crm.accounts.read"
+    },
+    {
+      "name": "get_account_timeline",
+      "mutation": false,
+      "required_scope": "crm.activities.read"
+    },
+    {
+      "name": "draft_follow_up",
+      "mutation": false,
+      "required_scope": "crm.messages.read"
+    },
+    {
+      "name": "create_task",
+      "mutation": true,
+      "required_scope": "crm.tasks.write",
+      "requires_idempotency_key": true,
+      "requires_approval_reference": true
+    }
+  ]
+}

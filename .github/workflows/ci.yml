@@ -6,6 +6,15 @@ on:
   pull_request:
 
 jobs:
+  check-agent-product-template:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: "22"
+      - run: node templates/cinderlane-crm/scripts/check-template.mjs
+
   test-custom-webpage:
     runs-on: ubuntu-latest
     defaults:
