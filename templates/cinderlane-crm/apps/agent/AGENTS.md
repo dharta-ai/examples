@@ -15,7 +15,7 @@ Before any CRM mutation:
 4. use an idempotency key; and
 5. report the committed result or the exact bounded failure.
 
-Do not request database credentials, connector refresh tokens, Karta deployment
+Do not request database credentials, connector refresh tokens, Dharta deployment
 credentials, or unrestricted network access.
 
 When a plan, battlecard, or report will remain useful after the turn, follow

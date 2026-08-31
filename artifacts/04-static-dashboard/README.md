@@ -1,7 +1,7 @@
 # 04 - Static Dashboard Artifact
 
 This Agent App produces one self-contained static web Artifact made from HTML,
-CSS, and JavaScript. Karta packages the declared render files and opens the
+CSS, and JavaScript. Dharta packages the declared render files and opens the
 entrypoint in its isolated Artifact canvas.
 
 Deploy the folder, start a conversation, and ask for the sample activation

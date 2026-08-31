@@ -1,5 +1,5 @@
-// Vendored from @karta/widget — KartaAgentClient (headless agent client).
-// Source: sdks/widget/src/client.ts @ karta monorepo 0d16f9bc.
+// Vendored from @dharta/widget — DhartaAgentClient (headless agent client).
+// Source: sdks/widget/src/client.ts @ dharta monorepo 0d16f9bc.
 // Bundled with esbuild (--bundle --format=esm --target=es2020).
 // Browser-safe: native fetch / ReadableStream / AbortController.
 // DO NOT EDIT BY HAND — re-vendor per the example README ("Updating the vendored client").
@@ -8,39 +8,39 @@ var __defNormalProp = (obj, key, value) => key in obj ? __defProp(obj, key, { en
 var __publicField = (obj, key, value) => __defNormalProp(obj, typeof key !== "symbol" ? key + "" : key, value);
 
 // sdks/widget/src/errors.ts
-var KartaWidgetError = class extends Error {
+var DhartaWidgetError = class extends Error {
   constructor(message, status, body) {
     super(message);
     __publicField(this, "status");
     __publicField(this, "body");
-    this.name = "KartaWidgetError";
+    this.name = "DhartaWidgetError";
     this.status = status;
     this.body = body;
   }
 };
-var KartaWidgetAuthError = class extends KartaWidgetError {
+var DhartaWidgetAuthError = class extends DhartaWidgetError {
   constructor(body, status = 401) {
     super("Unauthenticated \u2014 session token missing, invalid, or expired", status, body);
-    this.name = "KartaWidgetAuthError";
+    this.name = "DhartaWidgetAuthError";
   }
 };
-var KartaWidgetForbiddenError = class extends KartaWidgetError {
+var DhartaWidgetForbiddenError = class extends DhartaWidgetError {
   constructor(body) {
     super("Forbidden \u2014 origin not allowed or caller lacks access", 403, body);
-    this.name = "KartaWidgetForbiddenError";
+    this.name = "DhartaWidgetForbiddenError";
   }
 };
-var KartaWidgetRateLimitedError = class extends KartaWidgetError {
+var DhartaWidgetRateLimitedError = class extends DhartaWidgetError {
   constructor(body, retryAfterSeconds = null) {
     super("Rate limited \u2014 too many requests", 429, body);
     // Surfaced from a 429 so a UI can show a "slow down" state. Retry-After
     // (seconds) is carried when the server sent it.
     __publicField(this, "retryAfterSeconds");
-    this.name = "KartaWidgetRateLimitedError";
+    this.name = "DhartaWidgetRateLimitedError";
     this.retryAfterSeconds = retryAfterSeconds;
   }
 };
-var KartaWidgetLimitReachedError = class extends KartaWidgetError {
+var DhartaWidgetLimitReachedError = class extends DhartaWidgetError {
   // A plan / usage limit was hit. Distinct from a transient rate-limit so a
   // UI can show "upgrade / come back later" rather than "slow down". Carries
   // its own status because two server shapes map here: a raw 402, and the
@@ -48,29 +48,29 @@ var KartaWidgetLimitReachedError = class extends KartaWidgetError {
   // `{error:"limit_reached"}` body (a HARD cap, not a transient throttle).
   constructor(body, status = 402) {
     super("Limit reached \u2014 plan or usage cap exceeded", status, body);
-    this.name = "KartaWidgetLimitReachedError";
+    this.name = "DhartaWidgetLimitReachedError";
   }
 };
-var KartaWidgetNetworkError = class extends KartaWidgetError {
+var DhartaWidgetNetworkError = class extends DhartaWidgetError {
   // A transport-layer failure (fetch threw, body missing, connection
   // dropped). status is 0 because there is no HTTP status to report.
   constructor(message, cause) {
     super(message, 0, null);
-    this.name = "KartaWidgetNetworkError";
+    this.name = "DhartaWidgetNetworkError";
     if (cause !== void 0) this.cause = cause;
   }
 };
 function errorForStatus(status, body, retryAfterSeconds = null) {
-  if (status === 401) return new KartaWidgetAuthError(body);
-  if (status === 403) return new KartaWidgetForbiddenError(body);
-  if (status === 402) return new KartaWidgetLimitReachedError(body);
+  if (status === 401) return new DhartaWidgetAuthError(body);
+  if (status === 403) return new DhartaWidgetForbiddenError(body);
+  if (status === 402) return new DhartaWidgetLimitReachedError(body);
   if (status === 429) {
     const code = body && typeof body === "object" ? body.error : void 0;
-    if (code === "limit_reached") return new KartaWidgetLimitReachedError(body, 429);
-    return new KartaWidgetRateLimitedError(body, retryAfterSeconds);
+    if (code === "limit_reached") return new DhartaWidgetLimitReachedError(body, 429);
+    return new DhartaWidgetRateLimitedError(body, retryAfterSeconds);
   }
-  const msg = body && typeof body === "object" && "message" in body && body.message ? body.message : `Karta widget API error ${status}`;
-  return new KartaWidgetError(String(msg), status, body);
+  const msg = body && typeof body === "object" && "message" in body && body.message ? body.message : `Dharta widget API error ${status}`;
+  return new DhartaWidgetError(String(msg), status, body);
 }
 
 // sdks/widget/src/transport/internal.ts
@@ -112,8 +112,8 @@ var TokenProvider = class {
       (s) => s !== void 0
     );
     if (sources.length === 0) {
-      throw new KartaWidgetError(
-        "KartaAgentClient: one of `token`, `tokenFn`, `tokenEndpoint`, or `embedKey` is required.",
+      throw new DhartaWidgetError(
+        "DhartaAgentClient: one of `token`, `tokenFn`, `tokenEndpoint`, or `embedKey` is required.",
         0,
         null
       );
@@ -185,7 +185,7 @@ var TokenProvider = class {
   adopt(body) {
     const t = body.token;
     if (typeof t !== "string" || t.length === 0) {
-      throw new KartaWidgetAuthError(body ?? null);
+      throw new DhartaWidgetAuthError(body ?? null);
     }
     this.cached = t;
     this.expiresAt = expiryFromBody(body) ?? decodeExpiry(t);
@@ -196,7 +196,7 @@ var TokenProvider = class {
     try {
       res = await this.opts.fetch(url, init);
     } catch (err) {
-      throw new KartaWidgetNetworkError(`Token request to ${url} failed`, err);
+      throw new DhartaWidgetNetworkError(`Token request to ${url} failed`, err);
     }
     const text = await res.text();
     let parsed = null;
@@ -254,7 +254,7 @@ function parseAgentRef(ref) {
   if (parts.length === 2 && SLUG.test(parts[0]) && SLUG.test(parts[1])) {
     return { org: parts[0], agent: parts[1] };
   }
-  throw new KartaWidgetError(
+  throw new DhartaWidgetError(
     `Invalid agent ref ${JSON.stringify(ref)} \u2014 expected the combined "org/agent" pair (two lowercase slug segments separated by one "/"), e.g. "coffeeco/support-bot".`,
     0,
     null
@@ -345,7 +345,7 @@ var ManagedAgentsTransport = class {
     });
     const id = body.id;
     if (typeof id !== "string" || id.length === 0) {
-      throw new KartaWidgetNetworkError(
+      throw new DhartaWidgetNetworkError(
         "createSession: server response missing session id"
       );
     }
@@ -465,7 +465,7 @@ var ManagedAgentsTransport = class {
       try {
         res = await this.opts.fetch(url, { method: init.method, headers, body });
       } catch (err) {
-        throw new KartaWidgetNetworkError(`Request to ${url} failed`, err);
+        throw new DhartaWidgetNetworkError(`Request to ${url} failed`, err);
       }
       return res;
     }, async (res) => {
@@ -493,7 +493,7 @@ var ManagedAgentsTransport = class {
           signal
         });
       } catch (err) {
-        throw new KartaWidgetNetworkError(`Stream request to ${url} failed`, err);
+        throw new DhartaWidgetNetworkError(`Stream request to ${url} failed`, err);
       }
       return res;
     });
@@ -519,7 +519,7 @@ var ManagedAgentsTransport = class {
       }
       return readBody ? readBody(res) : res;
     }
-    throw new KartaWidgetNetworkError("Request failed after token refresh");
+    throw new DhartaWidgetNetworkError("Request failed after token refresh");
   }
 };
 function mapWireEvent(wire) {
@@ -627,7 +627,7 @@ var ResponsesTransport = class {
           signal
         });
       } catch (err) {
-        throw new KartaWidgetNetworkError(`Stream request to ${url} failed`, err);
+        throw new DhartaWidgetNetworkError(`Stream request to ${url} failed`, err);
       }
       if (res.status === 401 && attempt === 0) {
         this.opts.tokens.invalidate();
@@ -639,12 +639,12 @@ var ResponsesTransport = class {
       }
       return res;
     }
-    throw new KartaWidgetNetworkError("Responses request failed after token refresh");
+    throw new DhartaWidgetNetworkError("Responses request failed after token refresh");
   }
 };
 
 // sdks/widget/src/client.ts
-var KartaAgentClient = class {
+var DhartaAgentClient = class {
   constructor(opts) {
     __publicField(this, "baseUrl");
     __publicField(this, "agentRef");
@@ -660,9 +660,9 @@ var KartaAgentClient = class {
     // instance can be reused if desired (the spec only requires abort+close).
     __publicField(this, "controller", new AbortController());
     __publicField(this, "closed", false);
-    if (!opts.baseUrl) throw new KartaWidgetError("KartaAgentClient: `baseUrl` is required.", 0, null);
+    if (!opts.baseUrl) throw new DhartaWidgetError("DhartaAgentClient: `baseUrl` is required.", 0, null);
     if (!opts.agentRef) {
-      throw new KartaWidgetError("KartaAgentClient: `agentRef` is required.", 0, null);
+      throw new DhartaWidgetError("DhartaAgentClient: `agentRef` is required.", 0, null);
     }
     parseAgentRef(opts.agentRef);
     this.baseUrl = opts.baseUrl.replace(/\/+$/, "");
@@ -735,7 +735,7 @@ var KartaAgentClient = class {
     try {
       await ma.postUserMessage(sid, outgoing);
     } catch (err) {
-      if (err instanceof KartaWidgetError && err.status === 404) {
+      if (err instanceof DhartaWidgetError && err.status === 404) {
         this._sessionId = null;
         await this.createSession();
         sid = this._sessionId;
@@ -780,14 +780,14 @@ ${text}`;
   async *stream(fromSeq) {
     this.assertOpen();
     if (!this.ma) {
-      throw new KartaWidgetError(
+      throw new DhartaWidgetError(
         "stream(): cursor-based resume is only supported by the managed-agents transport.",
         0,
         null
       );
     }
     if (!this._sessionId) {
-      throw new KartaWidgetError("stream(): no active session \u2014 call createSession() or resume() first.", 0, null);
+      throw new DhartaWidgetError("stream(): no active session \u2014 call createSession() or resume() first.", 0, null);
     }
     const from = fromSeq ?? this.ma.lastSeq;
     yield* this.ma.streamTurn(this._sessionId, from, this.controller.signal);
@@ -799,7 +799,7 @@ ${text}`;
   async resume(sessionId) {
     this.assertOpen();
     if (!this.ma) {
-      throw new KartaWidgetError(
+      throw new DhartaWidgetError(
         "resume(): session resume is only supported by the managed-agents transport.",
         0,
         null
@@ -829,7 +829,7 @@ ${text}`;
   async openSession(sessionId) {
     this.assertOpen();
     if (!this.ma) {
-      throw new KartaWidgetError("openSession(): only the managed-agents transport.", 0, null);
+      throw new DhartaWidgetError("openSession(): only the managed-agents transport.", 0, null);
     }
     const transcript = await this.ma.getTranscript(sessionId, this.identity.userId);
     this._sessionId = sessionId;
@@ -855,14 +855,14 @@ ${text}`;
   async confirmTool(requestId, decision) {
     this.assertOpen();
     if (!this.ma) {
-      throw new KartaWidgetError(
+      throw new DhartaWidgetError(
         "confirmTool(): tool confirmation is only supported by the managed-agents transport.",
         0,
         null
       );
     }
     if (!this._sessionId) {
-      throw new KartaWidgetError("confirmTool(): no active session.", 0, null);
+      throw new DhartaWidgetError("confirmTool(): no active session.", 0, null);
     }
     await this.ma.confirmTool(this._sessionId, requestId, decision);
   }
@@ -880,7 +880,7 @@ ${text}`;
   async uploadFile(name, contentBase64) {
     this.assertOpen();
     if (!this.ma) {
-      throw new KartaWidgetError(
+      throw new DhartaWidgetError(
         "uploadFile(): file upload is only supported by the managed-agents transport.",
         0,
         null
@@ -891,12 +891,12 @@ ${text}`;
   }
   // RFC 0015 Phase 5: per-request headers for the MCP App proxy host
   // (assistant-ui's McpAppsRemoteHost). The bearer token authenticates the
-  // relay; `X-Karta-Session` scopes it to the active session's microVM (which
+  // relay; `X-Dharta-Session` scopes it to the active session's microVM (which
   // holds the MCP connection). Errors degrade to no auth header — the proxy
   // 401s and the renderer shows its error fallback, never throwing.
   async mcpHeaders() {
     const headers = {};
-    if (this._sessionId) headers["X-Karta-Session"] = this._sessionId;
+    if (this._sessionId) headers["X-Dharta-Session"] = this._sessionId;
     try {
       const token = await this.tokens.getToken();
       if (token) headers["Authorization"] = `Bearer ${token}`;
@@ -944,15 +944,15 @@ ${text}`;
   }
   assertOpen() {
     if (this.closed) {
-      throw new KartaWidgetError("KartaAgentClient: client has been shut down.", 0, null);
+      throw new DhartaWidgetError("DhartaAgentClient: client has been shut down.", 0, null);
     }
   }
 };
 function resolveFetch(injected) {
   const f = injected ?? globalThis.fetch;
   if (!f) {
-    throw new KartaWidgetError(
-      "KartaAgentClient: no `fetch` available. Pass one via the `fetch` option (Node <18 / SSR).",
+    throw new DhartaWidgetError(
+      "DhartaAgentClient: no `fetch` available. Pass one via the `fetch` option (Node <18 / SSR).",
       0,
       null
     );
@@ -960,5 +960,5 @@ function resolveFetch(injected) {
   return f.bind(globalThis);
 }
 export {
-  KartaAgentClient
+  DhartaAgentClient
 };

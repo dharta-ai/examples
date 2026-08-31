@@ -1,5 +1,5 @@
 /* Minimal app shell + bring-your-own-DOM chat. The mount module styles nothing —
-   these classes (.karta-turn / .karta-msg / .karta-name / .karta-escalate) are
+   these classes (.dharta-turn / .dharta-msg / .dharta-name / .dharta-escalate) are
    what it builds; dress them however your app likes. */
 * { box-sizing: border-box; }
 body {
@@ -21,18 +21,18 @@ body {
   display: flex; flex-direction: column; gap: 0.75rem;
   padding: 1rem; background: #fff; border: 1px solid #e7e8ea; border-radius: 12px;
 }
-.karta-turn { display: flex; flex-direction: column; gap: 0.25rem; }
-.karta-turn--user { align-items: flex-end; }
-.karta-name { font-size: 0.7rem; color: #696e77; text-transform: uppercase; letter-spacing: 0.06em; }
-.karta-msg {
+.dharta-turn { display: flex; flex-direction: column; gap: 0.25rem; }
+.dharta-turn--user { align-items: flex-end; }
+.dharta-name { font-size: 0.7rem; color: #696e77; text-transform: uppercase; letter-spacing: 0.06em; }
+.dharta-msg {
   padding: 0.5rem 0.75rem; border-radius: 12px; max-width: 85%;
   line-height: 1.5; white-space: pre-wrap; word-break: break-word;
 }
-.karta-msg--user { background: #16181d; color: #fff; }
-.karta-msg--agent { background: #eef0f3; }
-.karta-msg--agent.is-error { color: #cf4e1f; }
-.karta-msg a { color: #5f7320; }
-.karta-escalate { font-size: 0.85rem; }
+.dharta-msg--user { background: #16181d; color: #fff; }
+.dharta-msg--agent { background: #eef0f3; }
+.dharta-msg--agent.is-error { color: #cf4e1f; }
+.dharta-msg a { color: #5f7320; }
+.dharta-escalate { font-size: 0.85rem; }
 .composer { display: flex; gap: 0.5rem; margin-top: 0.75rem; }
 .composer textarea {
   flex: 1; resize: none; padding: 0.6rem 0.75rem; font: inherit;
@@ -44,11 +44,11 @@ body {
 }
 /* Cold-start "warming" wait indicator (the agent's microVM is booting). The
    mount module's setStatus renders these dots below the status text. */
-.karta-typing { display: inline-flex; gap: 4px; padding-top: 4px; vertical-align: middle; }
-.karta-typing span {
+.dharta-typing { display: inline-flex; gap: 4px; padding-top: 4px; vertical-align: middle; }
+.dharta-typing span {
   width: 6px; height: 6px; border-radius: 999px; background: #9aa0aa;
-  animation: karta-blink 1.2s infinite both;
+  animation: dharta-blink 1.2s infinite both;
 }
-.karta-typing span:nth-child(2) { animation-delay: 0.2s; }
-.karta-typing span:nth-child(3) { animation-delay: 0.4s; }
-@keyframes karta-blink { 0%, 80%, 100% { opacity: 0.25; } 40% { opacity: 1; } }
+.dharta-typing span:nth-child(2) { animation-delay: 0.2s; }
+.dharta-typing span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes dharta-blink { 0%, 80%, 100% { opacity: 0.25; } 40% { opacity: 1; } }

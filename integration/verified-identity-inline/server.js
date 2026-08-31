@@ -1,9 +1,9 @@
 // A minimal backend for the "authenticated agent" example. Node built-ins only —
 // no dependencies. It does two things:
 //
-//   1. /api/karta-identity — vouch for the signed-in user. This is the whole
+//   1. /api/dharta-identity — vouch for the signed-in user. This is the whole
 //      point of the example: your backend holds the secret AND has authenticated
-//      the user, so it signs their id with HMAC-SHA256. Karta re-verifies it and
+//      the user, so it signs their id with HMAC-SHA256. Dharta re-verifies it and
 //      only then trusts the `sub`.
 //   2. serve the static page + the vendored mount module + your config.js.
 
@@ -16,10 +16,10 @@ import { dirname, join, extname, normalize, sep } from "node:path";
 const HERE = dirname(fileURLToPath(import.meta.url));
 const PORT = process.env.PORT || 8787;
 
-// The Karta identity-verification secret FOR YOUR EMBED KEY. Provision it in the
+// The Dharta identity-verification secret FOR YOUR EMBED KEY. Provision it in the
 // dashboard (your agent → Embed → the key → configure → Generate secret) and pass
 // the revealed value in via env. It is SERVER-ONLY — never send it to the browser.
-const KARTA_IDENTITY_SECRET = process.env.KARTA_IDENTITY_SECRET || "";
+const DHARTA_IDENTITY_SECRET = process.env.DHARTA_IDENTITY_SECRET || "";
 
 // Your real app derives the signed-in user from ITS OWN session/auth. This demo
 // hard-codes one so you can run it with no login system. NEVER take the user id
@@ -37,12 +37,12 @@ const CONTENT_TYPES = {
 const server = createServer(async (req, res) => {
   const url = new URL(req.url, `http://${req.headers.host}`);
 
-  if (url.pathname === "/api/karta-identity") {
-    if (!KARTA_IDENTITY_SECRET) {
-      return json(res, 500, { error: "KARTA_IDENTITY_SECRET is not set — see the README." });
+  if (url.pathname === "/api/dharta-identity") {
+    if (!DHARTA_IDENTITY_SECRET) {
+      return json(res, 500, { error: "DHARTA_IDENTITY_SECRET is not set — see the README." });
     }
     const userId = SIGNED_IN_USER.id; // ← from your session in a real app
-    const identityToken = createHmac("sha256", KARTA_IDENTITY_SECRET).update(userId).digest("hex");
+    const identityToken = createHmac("sha256", DHARTA_IDENTITY_SECRET).update(userId).digest("hex");
     return json(res, 200, { userId, name: SIGNED_IN_USER.name, identityToken });
   }
 
@@ -74,7 +74,7 @@ function json(res, status, body) {
 
 server.listen(PORT, () => {
   console.log(`verified-identity-inline demo → http://localhost:${PORT}`);
-  if (!KARTA_IDENTITY_SECRET) {
-    console.log("⚠  KARTA_IDENTITY_SECRET is not set — the agent will run anonymous. See the README.");
+  if (!DHARTA_IDENTITY_SECRET) {
+    console.log("⚠  DHARTA_IDENTITY_SECRET is not set — the agent will run anonymous. See the README.");
   }
 });

@@ -7,7 +7,7 @@ description: Render rich, interactive UI (forms, cards, pickers, charts) to the 
 
 You can render real interactive UI in the chat - forms, cards, tables, pickers,
 charts - instead of describing them in text. You do this by emitting an **A2UI
-surface** inside a fenced ` ```a2ui ` block in your reply. Karta extracts the
+surface** inside a fenced ` ```a2ui ` block in your reply. Dharta extracts the
 block, validates it, and renders it natively (themed to the app). The rest of
 your message renders as normal prose around the UI.
 
@@ -23,14 +23,14 @@ Put a fenced `a2ui` block containing a JSON array of A2UI messages:
 
     ```a2ui
     [
-      {"createSurface": {"surfaceId": "s1", "catalogId": "sh.karta/basic", "root": "card"}},
+      {"createSurface": {"surfaceId": "s1", "catalogId": "sh.dharta/basic", "root": "card"}},
       {"updateComponents": {"surfaceId": "s1", "components": [ ... ]}},
       {"updateDataModel": {"surfaceId": "s1", "path": "/field", "value": "..."}}
     ]
     ```
 
 - **createSurface** starts a surface. `surfaceId` is any short id. `catalogId` is
-  the component set you draw from (use `sh.karta/basic` for the built-ins below,
+  the component set you draw from (use `sh.dharta/basic` for the built-ins below,
   or your app's registered catalog id). `root` is the id of the top component.
 - **updateComponents** adds components. Each has an `id`, a `component` type from
   the catalog, and `properties`. Children are referenced by id (a flat list, not
@@ -44,7 +44,7 @@ Rules:
 - Keep the block to ONE surface unless you truly need several.
 - Emit valid JSON. If unsure, prefer fewer components that you know are valid.
 
-## Built-in catalog (`sh.karta/basic`)
+## Built-in catalog (`sh.dharta/basic`)
 
 Layout: `Card` (title, subtitle, children), `Column` (children, gap), `Row`
 (children, gap), `Divider`.
@@ -82,7 +82,7 @@ A feedback form:
 
     ```a2ui
     [
-      {"createSurface": {"surfaceId": "fb", "catalogId": "sh.karta/basic", "root": "card"}},
+      {"createSurface": {"surfaceId": "fb", "catalogId": "sh.dharta/basic", "root": "card"}},
       {"updateComponents": {"surfaceId": "fb", "components": [
         {"id": "card", "component": "Card", "properties": {"title": "Quick feedback", "children": ["rating", "note", "send"]}},
         {"id": "rating", "component": "Select", "properties": {"label": "Rating", "value": {"path": "/rating"}, "options": ["great", "ok", "bad"]}},
@@ -97,7 +97,7 @@ A read-only status card:
 
     ```a2ui
     [
-      {"createSurface": {"surfaceId": "ord", "catalogId": "sh.karta/basic", "root": "card"}},
+      {"createSurface": {"surfaceId": "ord", "catalogId": "sh.dharta/basic", "root": "card"}},
       {"updateComponents": {"surfaceId": "ord", "components": [
         {"id": "card", "component": "Card", "properties": {"title": "Order #4821", "children": ["b", "items"]}},
         {"id": "b", "component": "Badge", "properties": {"text": "Shipped", "variant": "success"}},
@@ -108,7 +108,7 @@ A read-only status card:
 
 ## Custom components (your app's catalog)
 
-If your app registered its own catalog (via `karta.toml [genui]`), use its
+If your app registered its own catalog (via `dharta.toml [genui]`), use its
 `catalogId` and its component types (e.g. a custom `pentagraph` chart or a canvas
 app). Those render with the app's own look. Follow the same message format; the
 component types and their properties are whatever your app registered.

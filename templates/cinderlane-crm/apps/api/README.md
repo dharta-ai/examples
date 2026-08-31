@@ -6,7 +6,7 @@ authentication policies.
 
 Required endpoints usually include:
 
-- browser sessions and verified Karta identity assertions;
+- browser sessions and verified Dharta identity assertions;
 - account, contact, activity, task, and opportunity APIs;
 - idempotent mutation endpoints used by MCP tools;
 - Artifact link registration and removal; and

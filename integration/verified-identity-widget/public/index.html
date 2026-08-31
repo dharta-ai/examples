@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Authenticated Karta widget example</title>
+  <title>Authenticated Dharta widget example</title>
   <style>
     :root {
       color-scheme: light;
@@ -109,10 +109,10 @@
 </head>
 <body>
   <main>
-    <h1>Authenticated Karta widget</h1>
+    <h1>Authenticated Dharta widget</h1>
     <p>
       This page simulates a signed-in product. The server signs the current
-      user id, the browser calls <code>karta("identify", ...)</code>, and the
+      user id, the browser calls <code>dharta("identify", ...)</code>, and the
       widget mints a verified session token without exposing any API key or
       identity secret.
     </p>
@@ -136,15 +136,15 @@
   </main>
 
   <script>
-    window.karta = window.karta || function () {
-      (window.karta.q = window.karta.q || []).push(arguments);
+    window.dharta = window.dharta || function () {
+      (window.dharta.q = window.dharta.q || []).push(arguments);
     };
 
     const config = {
-      baseUrl: __KARTA_BASE_URL__,
-      agentRef: __KARTA_AGENT_REF__,
-      embedKey: __KARTA_EMBED_KEY__,
-      widgetSrc: __KARTA_WIDGET_SRC__,
+      baseUrl: __DHARTA_BASE_URL__,
+      agentRef: __DHARTA_AGENT_REF__,
+      embedKey: __DHARTA_EMBED_KEY__,
+      widgetSrc: __DHARTA_WIDGET_SRC__,
     };
 
     const userEl = document.querySelector("#user");
@@ -158,7 +158,7 @@
     agentEl.textContent = config.agentRef;
     baseEl.textContent = config.baseUrl;
 
-    karta("init", {
+    dharta("init", {
       baseUrl: config.baseUrl,
       agentRef: config.agentRef,
       embedKey: config.embedKey,
@@ -170,12 +170,12 @@
       },
     });
 
-    openButton.addEventListener("click", () => karta("open"));
+    openButton.addEventListener("click", () => dharta("open"));
     stepUpButton.addEventListener("click", async () => {
       setBusy(true, "Completing step-up...");
       try {
-        const identity = await fetchJson("/api/karta-step-up", { method: "POST" });
-        karta("identify", identity);
+        const identity = await fetchJson("/api/dharta-step-up", { method: "POST" });
+        dharta("identify", identity);
         renderIdentity(identity, "Step-up signed");
         statusEl.textContent = "Step-up token installed. The next widget request uses the refreshed session token.";
       } catch (error) {
@@ -190,8 +190,8 @@
     async function boot() {
       setBusy(true, "Fetching signed identity...");
       try {
-        const identity = await fetchJson("/api/karta-identity");
-        karta("identify", identity);
+        const identity = await fetchJson("/api/dharta-identity");
+        dharta("identify", identity);
         renderIdentity(identity, "Verified");
         loadWidget();
         openButton.disabled = false;

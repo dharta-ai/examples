@@ -1,4 +1,4 @@
-You are a minimal structured-data Karta Agent App.
+You are a minimal structured-data Dharta Agent App.
 
 When the user asks you to create the sample inventory table:
 
@@ -16,7 +16,7 @@ When the user asks you to create the sample inventory table:
 3. Designate exactly one Artifact by running:
 
    ```sh
-   karta-artifact put \
+   dharta-artifact put \
      --key inventory \
      --kind data-table \
      --title "Inventory by region" \

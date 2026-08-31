@@ -1,7 +1,7 @@
 # --- Identity -------------------------------------------------------------
 name = "genui-concierge-claude-code"
 
-# Deploy gate. Only agents with deploy = true ship on `karta deploy`.
+# Deploy gate. Only agents with deploy = true ship on `dharta deploy`.
 deploy = true
 
 # --- Harness (RFC 0035) ---------------------------------------------------
@@ -10,9 +10,9 @@ type = "claude-code"
 
 # --- Generative UI (RFC 0056) ---------------------------------------------
 # Opting in here injects the generative-ui skill into this agent's harness and
-# tells Karta which catalog + components the agent may render.
+# tells Dharta which catalog + components the agent may render.
 #
-#   catalog_id  - the component set this agent draws from. "sh.karta/basic" is
+#   catalog_id  - the component set this agent draws from. "sh.dharta/basic" is
 #                 the built-in Tier-1 shadcn set (host-rendered, always safe).
 #   bundle      - the built component bundle for your CUSTOM (Tier 2/3)
 #                 components. Required once any component is tier >= 2. The demo
@@ -23,7 +23,7 @@ type = "claude-code"
 #                 1 declarative host-rendered, 2 remote-DOM worker, 3 sandboxed
 #                 iframe.
 [genui]
-catalog_id = "sh.karta/basic"
+catalog_id = "sh.dharta/basic"
 bundle = "genui/components.js"
 components = [
   { name = "pentagraph", tier = 2 },

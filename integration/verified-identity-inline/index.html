@@ -32,19 +32,19 @@
     <script type="module">
       import { mountInlineAgent } from "./src/mount-inline-agent.js";
 
-      const cfg = window.KARTA_CONFIG;
+      const cfg = window.DHARTA_CONFIG;
       if (!cfg) {
         document.getElementById("thread").textContent =
           "Missing config.js — copy config.example.js to config.js and fill it in.";
       } else {
-        // 1) Ask YOUR backend who's signed in + a Karta identity token for them.
+        // 1) Ask YOUR backend who's signed in + a Dharta identity token for them.
         //    (Your backend authenticated them and holds the secret; the browser
         //    never sees the secret, only this per-user token.)
-        const me = await fetch("/api/karta-identity").then((r) => r.json());
+        const me = await fetch("/api/dharta-identity").then((r) => r.json());
         document.getElementById("whoami").textContent = me.name;
         document.getElementById("whoami2").textContent = me.name;
 
-        // 2) Mount the agent with that VERIFIED identity. Karta re-checks the HMAC
+        // 2) Mount the agent with that VERIFIED identity. Dharta re-checks the HMAC
         //    at mint, so the agent's `sub` is trustworthy: per-user memory, and
         //    answers scoped to this exact user.
         mountInlineAgent({

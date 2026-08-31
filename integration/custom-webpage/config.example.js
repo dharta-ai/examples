@@ -10,10 +10,10 @@
 // runs). See the README.
 
 export default {
-  // Karta's own support agent. Replace with your own project to point the page
+  // Dharta's own support agent. Replace with your own project to point the page
   // at your agent.
-  agentRef: "org-8z06atvr/karta",
-  baseUrl: "https://agent.karta.sh",
+  agentRef: "org-8z06atvr/dharta",
+  baseUrl: "https://agent.dharta.sh",
 
   // Placeholder — replace with a real origin-gated pk_live_ key that allowlists
   // your local origin. With this placeholder, the page loads and is interactive
@@ -21,5 +21,5 @@ export default {
   embedKey: "pk_live_REPLACE_WITH_YOUR_ORIGIN_GATED_KEY",
 
   // Where "Talk to a human" points when the agent errors.
-  escalateHref: "mailto:support@karta.sh",
+  escalateHref: "mailto:support@dharta.sh",
 };

@@ -1,9 +1,9 @@
 # Custom webpage (bring-your-own-DOM)
 
 The advanced integration: keep **your page's own textbox and content area**, and
-let a Karta-hosted agent stream its replies into the elements you already have.
+let a Dharta-hosted agent stream its replies into the elements you already have.
 No floating widget, no iframe. This is the same pattern that powers the live chat
-on the [karta.sh](https://karta.sh) home page.
+on the [dharta.sh](https://dharta.sh) home page.
 
 Use this when the widget's prebuilt UI isn't enough — you want the agent to live
 *inside* your page's design, driven by your own input box.
@@ -13,12 +13,12 @@ Use this when the widget's prebuilt UI isn't enough — you want the agent to li
 | **Identity** | anonymous |
 | **Backend** | none (a publishable embed key authenticates the browser) |
 | **You provide** | a text input + a content area in your own markup |
-| **Karta provides** | the streamed agent turns |
+| **Dharta provides** | the streamed agent turns |
 
 ## How it works
 
 A small framework-agnostic ES module, [`src/mount-inline-agent.js`](src/mount-inline-agent.js),
-wraps the published headless client (`KartaAgentClient`) and binds it to your DOM:
+wraps the published headless client (`DhartaAgentClient`) and binds it to your DOM:
 
 ```js
 import { mountInlineAgent } from "./src/mount-inline-agent.js";
@@ -27,10 +27,10 @@ const agent = mountInlineAgent({
   input: "#input",            // your textbox (element or selector)
   output: "#transcript",      // your content area
   submit: "#send",            // optional; Enter and form-submit also send
-  agentRef: "org-8z06atvr/karta",
-  baseUrl: "https://agent.karta.sh",
+  agentRef: "org-8z06atvr/dharta",
+  baseUrl: "https://agent.dharta.sh",
   embedKey: "pk_live_…",      // publishable, origin-gated — safe in page source
-  escalateHref: "mailto:support@karta.sh",
+  escalateHref: "mailto:support@dharta.sh",
 });
 
 // Optional: make suggestion chips send real turns.
@@ -63,8 +63,8 @@ npx serve .         # or: python3 -m http.server 8080
 # open the printed http://localhost:… URL
 ```
 
-Out of the box it points at Karta's own support agent (the live
-`org-8z06atvr/karta` project). To make live replies work you need an origin-gated
+Out of the box it points at Dharta's own support agent (the live
+`org-8z06atvr/dharta` project). To make live replies work you need an origin-gated
 `pk_live_` key that allowlists your local origin:
 
 ```bash
@@ -84,24 +84,24 @@ npm test
 
 The tests inject a fake client and assert the DOM behavior (REPLACE streaming,
 text-only rendering, busy gating, error + escalation, render-hook overrides).
-They don't hit the network — the client itself is tested in `@karta/widget`.
+They don't hit the network — the client itself is tested in `@dharta/widget`.
 
 ## Wiring it into your own app (e.g. Rails)
 
 There's no build step and no React. Copy two files into your codebase and load
 them as modules:
 
-- `src/karta-agent-client.js` — the vendored headless client (see *Updating the
+- `src/dharta-agent-client.js` — the vendored headless client (see *Updating the
   vendored client* below)
 - `src/mount-inline-agent.js` — the binding module
 
 Then, in any server-rendered page that has a textbox and a content area, add a
-module script. This is exactly how karta.sh does it (a Rails app, importmap-free):
+module script. This is exactly how dharta.sh does it (a Rails app, importmap-free):
 
 ```erb
 <%# only emit when the project + key are configured, e.g. from ENV %>
 <script type="module" nonce="<%= content_security_policy_nonce %>">
-  import { mountInlineAgent } from "/karta/mount-inline-agent.js";
+  import { mountInlineAgent } from "/dharta/mount-inline-agent.js";
   mountInlineAgent({
     input: "#input",
     output: "#thread",
@@ -123,20 +123,20 @@ your Content-Security-Policy `script-src 'self'` covers them, and make sure
 
 The embed key is publishable and safe, but if you'd rather not ship one, mint a
 short-lived session token on your backend and pass a `tokenFn` instead of
-`embedKey` when you construct the client. See `KartaAgentClient`'s `tokenFn` /
-`tokenEndpoint` options in `@karta/widget`.
+`embedKey` when you construct the client. See `DhartaAgentClient`'s `tokenFn` /
+`tokenEndpoint` options in `@dharta/widget`.
 
 ## Updating the vendored client
 
-`src/karta-agent-client.js` is a generated bundle of `KartaAgentClient` from
-`@karta/widget` (the banner at the top records the source commit). It's vendored
+`src/dharta-agent-client.js` is a generated bundle of `DhartaAgentClient` from
+`@dharta/widget` (the banner at the top records the source commit). It's vendored
 rather than installed from npm. To refresh it from the SDK source:
 
 ```bash
 esbuild sdks/widget/src/client.ts --bundle --format=esm --target=es2020 \
-  --outfile=integration/custom-webpage/src/karta-agent-client.js
+  --outfile=integration/custom-webpage/src/dharta-agent-client.js
 ```
 
-(then re-add the provenance banner). Because this example *is* the karta.sh home
+(then re-add the provenance banner). Because this example *is* the dharta.sh home
 page integration, drift from the live endpoint shows up immediately on
-karta.sh — the dogfood is the freshness check.
+dharta.sh — the dogfood is the freshness check.

@@ -1,14 +1,14 @@
 // mount-inline-agent.js
 // ---------------------------------------------------------------------------
-// Bind a Karta-hosted agent to a web page you already own.
+// Bind a Dharta-hosted agent to a web page you already own.
 //
 // This is the "bring-your-own-DOM" integration. Instead of dropping in the
 // floating chat widget, you keep YOUR page's own text input and content area,
 // and the agent's replies stream into elements you control. It is the same
-// module that powers the live chat on karta.sh's home page.
+// module that powers the live chat on dharta.sh's home page.
 //
 // It talks to the agent through the published headless client
-// (KartaAgentClient, vendored here as ./karta-agent-client.js). Auth is a
+// (DhartaAgentClient, vendored here as ./dharta-agent-client.js). Auth is a
 // publishable, origin-gated `pk_live_` embed key, which is safe to ship in
 // page source (the origin allowlist + a per-project credit cap are the gate,
 // not the key).
@@ -26,8 +26,8 @@
 // being able to inject markup into your page.
 // ---------------------------------------------------------------------------
 
-import { KartaAgentClient } from "./karta-agent-client.js";
-import { renderMarkdown } from "./karta-markdown.js";
+import { DhartaAgentClient } from "./dharta-agent-client.js";
+import { renderMarkdown } from "./dharta-markdown.js";
 
 // Re-exported so a host supplying its own `createReply` can render agent text
 // the same safe way.
@@ -38,8 +38,8 @@ export { renderMarkdown };
  * @property {Element|string} input      Your text input (textarea/input) or a selector for it.
  * @property {Element|string} output     Your content/transcript area or a selector for it.
  * @property {Element|string} [submit]   Optional send button. Form-submit and Enter also send.
- * @property {string} [agentRef]       "{org}/{agent}", e.g. "org-8z06atvr/karta".
- * @property {string} [baseUrl]          Agent endpoint origin, e.g. "https://agent.karta.sh".
+ * @property {string} [agentRef]       "{org}/{agent}", e.g. "org-8z06atvr/dharta".
+ * @property {string} [baseUrl]          Agent endpoint origin, e.g. "https://agent.dharta.sh".
  * @property {string} [embedKey]         Publishable pk_live_ embed key (origin-gated).
  * @property {string} [agentName]        Label shown on agent turns. Default "Agent".
  * @property {string} [escalateHref]     "Talk to a human" target (mailto:/url), shown on error.
@@ -75,7 +75,7 @@ export function mountInlineAgent(options) {
   // and so a host can supply a client built a different way (e.g. server-minted
   // tokens via `tokenFn`). By default we construct the published client from
   // the embed config.
-  const createClient = options.createClient || ((cfg) => new KartaAgentClient(cfg));
+  const createClient = options.createClient || ((cfg) => new DhartaAgentClient(cfg));
   const client = createClient({
     baseUrl: options.baseUrl,
     agentRef: options.agentRef,
@@ -89,7 +89,7 @@ export function mountInlineAgent(options) {
   });
 
   // Rendering is injectable. The standalone example uses the defaults below; a
-  // host (e.g. karta.sh) passes hooks that build DOM in its own classes so the
+  // host (e.g. dharta.sh) passes hooks that build DOM in its own classes so the
   // live replies look identical to the rest of the page.
   const renderUser = options.renderUser || defaultRenderUser;
   const createReply = options.createReply || defaultCreateReply;
@@ -139,7 +139,7 @@ export function mountInlineAgent(options) {
   }
 
   /**
-   * A visitor-safe error string. A turn that fails inside Karta's model gateway
+   * A visitor-safe error string. A turn that fails inside Dharta's model gateway
    * surfaces internal plumbing (a loopback URL like
    * `http://127.0.0.1:36021/v1/chat/completions`, or `provider HTTP 403`) that
    * is noise — or an info leak — to a visitor and gives them nothing to act on.
@@ -312,7 +312,7 @@ export function mountInlineAgent(options) {
     // dependency on host styles or any CSP-governed inline style attribute.
     reply.element.appendChild(document.createElement("br"));
     const a = document.createElement("a");
-    a.className = "karta-escalate";
+    a.className = "dharta-escalate";
     a.href = escalateHref;
     a.textContent = "Talk to a human →";
     reply.element.appendChild(a);
@@ -368,9 +368,9 @@ function resolveEl(ref, label) {
 // up. Hosts override renderUser / createReply to match their own design.
 function defaultRenderUser(text, outputEl) {
   const turn = document.createElement("div");
-  turn.className = "karta-turn karta-turn--user";
+  turn.className = "dharta-turn dharta-turn--user";
   const bubble = document.createElement("div");
-  bubble.className = "karta-msg karta-msg--user";
+  bubble.className = "dharta-msg dharta-msg--user";
   bubble.textContent = text; // safe: no markup injection
   turn.appendChild(bubble);
   outputEl.appendChild(turn);
@@ -379,12 +379,12 @@ function defaultRenderUser(text, outputEl) {
 
 function defaultCreateReply(outputEl, agentName) {
   const turn = document.createElement("div");
-  turn.className = "karta-turn karta-turn--agent";
+  turn.className = "dharta-turn dharta-turn--agent";
   const name = document.createElement("div");
-  name.className = "karta-name";
+  name.className = "dharta-name";
   name.textContent = agentName;
   const body = document.createElement("div");
-  body.className = "karta-msg karta-msg--agent";
+  body.className = "dharta-msg dharta-msg--agent";
   body.textContent = "…";
   turn.appendChild(name);
   turn.appendChild(body);
@@ -402,7 +402,7 @@ function defaultCreateReply(outputEl, agentName) {
       // text — we're still waiting. setText replaces it all with the real reply.
       body.classList.remove("is-error");
       body.innerHTML =
-        '<span class="karta-typing" aria-label="working"><span></span><span></span><span></span></span>';
+        '<span class="dharta-typing" aria-label="working"><span></span><span></span><span></span></span>';
       const line = document.createElement("div");
       line.textContent = t; // safe
       body.insertBefore(line, body.firstChild);

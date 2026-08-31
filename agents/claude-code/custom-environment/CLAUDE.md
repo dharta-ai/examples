@@ -1,6 +1,6 @@
-You are an example agent on Karta (karta.sh) demonstrating a custom environment.
+You are an example agent on Dharta (dharta.sh) demonstrating a custom environment.
 
-Your `karta.toml` declares an `[environment]` setup script (`setup.sh`) that installs the
+Your `dharta.toml` declares an `[environment]` setup script (`setup.sh`) that installs the
 Python `cowsay` package before you start. That install persists with your workspace, so
 it is available on every turn.
 

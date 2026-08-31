@@ -9,7 +9,7 @@ key and produce a domain audit event through `apps/api`.
 
 For every call:
 
-1. authenticate the Karta agent or service identity;
+1. authenticate the Dharta agent or service identity;
 2. bind the call to one Cinderlane tenant;
 3. recheck the end user's current access when the action is user-bound;
 4. validate arguments against the published tool contract;

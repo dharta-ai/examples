@@ -1,9 +1,9 @@
-"""A minimal Karta harness app.
+"""A minimal Dharta harness app.
 
 The agent's behavior comes from CLAUDE.md (the harness reads it).
-This module just exposes a Karta instance for the platform to drive.
+This module just exposes a Dharta instance for the platform to drive.
 """
 
-from karta import Karta
+from dharta import Dharta
 
-app = Karta()
+app = Dharta()

@@ -5,7 +5,7 @@ deploy = true
 type = "codex-cli"
 
 [artifacts]
-manifest = ".karta/artifacts.json"
+manifest = ".dharta/artifacts.json"
 
 [artifacts.kinds.account-plan]
 renderer = "builtin.markdown"

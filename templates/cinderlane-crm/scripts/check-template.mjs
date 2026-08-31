@@ -12,7 +12,7 @@ const required = [
   "apps/mcp-server/tool-contracts.json",
   "apps/agent/README.md",
   "apps/agent/AGENTS.md",
-  "apps/agent/karta.toml",
+  "apps/agent/dharta.toml",
   "apps/agent/connectors/README.md",
   "apps/agent/skills/crm-operator/SKILL.md",
   "apps/agent/artifacts/account-plan/ARTIFACT.md",
@@ -35,18 +35,18 @@ for (const relative of required) {
   }
 }
 
-const agentConfig = await fs.readFile(path.join(root, "apps/agent/karta.toml"), "utf8");
+const agentConfig = await fs.readFile(path.join(root, "apps/agent/dharta.toml"), "utf8");
 for (const fragment of [
   'name = "cinderlane-crm-agent"',
   "deploy = true",
   'type = "codex-cli"',
-  'manifest = ".karta/artifacts.json"',
+  'manifest = ".dharta/artifacts.json"',
   "[artifacts.kinds.account-plan]",
   "[artifacts.kinds.battlecard]",
   "[artifacts.kinds.board-report]",
 ]) {
   if (!agentConfig.includes(fragment)) {
-    failures.push(`apps/agent/karta.toml lacks ${JSON.stringify(fragment)}`);
+    failures.push(`apps/agent/dharta.toml lacks ${JSON.stringify(fragment)}`);
   }
 }
 
@@ -69,7 +69,7 @@ for (const entry of await fs.readdir(artifactRoot, { withFileTypes: true })) {
     failures.push(`Artifact Type ${entry.name} lacks a frontmatter description`);
   }
   if (!agentConfig.includes(`[artifacts.kinds.${entry.name}]`)) {
-    failures.push(`Artifact Type ${entry.name} is not registered in karta.toml`);
+    failures.push(`Artifact Type ${entry.name} is not registered in dharta.toml`);
   }
 }
 

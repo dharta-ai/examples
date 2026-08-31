@@ -1,5 +1,5 @@
-// Vendored from @karta/widget — renderMarkdown/escapeHtml (the XSS boundary).
-// Source: sdks/widget/src/markdown.ts @ karta monorepo 0d16f9bc. esbuild ESM. DO NOT EDIT.
+// Vendored from @dharta/widget — renderMarkdown/escapeHtml (the XSS boundary).
+// Source: sdks/widget/src/markdown.ts @ dharta monorepo 0d16f9bc. esbuild ESM. DO NOT EDIT.
 
 // sdks/widget/src/markdown.ts
 function escapeHtml(input) {

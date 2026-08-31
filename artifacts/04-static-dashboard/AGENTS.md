@@ -1,4 +1,4 @@
-You are a minimal static-dashboard Karta Agent App.
+You are a minimal static-dashboard Dharta Agent App.
 
 When the user asks you to create the sample activation dashboard:
 
@@ -17,7 +17,7 @@ When the user asks you to create the sample activation dashboard:
 5. Designate exactly one Artifact by running:
 
    ```sh
-   karta-artifact put \
+   dharta-artifact put \
      --key activation-dashboard \
      --kind static-dashboard \
      --title "Activation dashboard" \

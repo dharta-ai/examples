@@ -1,7 +1,7 @@
 // @vitest-environment jsdom
 //
 // These tests pin the *intent* of the inline integration, not the wire
-// protocol (KartaAgentClient is tested in @karta/widget). We inject a fake
+// protocol (DhartaAgentClient is tested in @dharta/widget). We inject a fake
 // client that yields a scripted AgentEvent stream, and assert how the module
 // drives the host's DOM: REPLACE-streamed text, text-only rendering, busy
 // gating, error + escalation, and host render-hook overrides.
@@ -9,7 +9,7 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { mountInlineAgent } from "../src/mount-inline-agent.js";
 
-// A fake KartaAgentClient: sendMessage() returns an async generator over a
+// A fake DhartaAgentClient: sendMessage() returns an async generator over a
 // fixed list of events, and records the text it was asked to send.
 function fakeClient(events) {
   const sent = [];
@@ -112,8 +112,8 @@ describe("mountInlineAgent", () => {
     await agent.send("hi");
 
     expect(client.sent).toEqual(["hi"]);
-    const user = els.output.querySelector(".karta-turn--user .karta-msg--user");
-    const reply = els.output.querySelector(".karta-turn--agent .karta-msg--agent");
+    const user = els.output.querySelector(".dharta-turn--user .dharta-msg--user");
+    const reply = els.output.querySelector(".dharta-turn--agent .dharta-msg--agent");
     expect(user.textContent).toBe("hi");
     // Reply shows the final full text, not the concatenation "HelHello there".
     expect(reply.textContent).toBe("Hello there");
@@ -133,7 +133,7 @@ describe("mountInlineAgent", () => {
 
     await agent.send("hi");
 
-    const reply = els.output.querySelector(".karta-turn--agent .karta-msg--agent");
+    const reply = els.output.querySelector(".dharta-turn--agent .dharta-msg--agent");
     expect(reply.textContent).toBe("Hello there");
   });
 
@@ -150,7 +150,7 @@ describe("mountInlineAgent", () => {
 
     await agent.send("q");
 
-    const reply = els.output.querySelector(".karta-msg--agent");
+    const reply = els.output.querySelector(".dharta-msg--agent");
     expect(reply.classList.contains("is-error")).toBe(true);
     expect(reply.textContent).toContain("temporarily unavailable");
     expect(reply.textContent).not.toContain("127.0.0.1");
@@ -159,16 +159,16 @@ describe("mountInlineAgent", () => {
 
   it("renders agent markdown safely (links clickable, raw HTML escaped)", async () => {
     const { els, agent } = mountWith([
-      { type: "message", text: "See the [docs](https://docs.karta.sh) and `git push`. <b>x</b>" },
+      { type: "message", text: "See the [docs](https://docs.dharta.sh) and `git push`. <b>x</b>" },
       { type: "done" },
     ]);
 
     await agent.send("how?");
 
-    const reply = els.output.querySelector(".karta-msg--agent");
+    const reply = els.output.querySelector(".dharta-msg--agent");
     const link = reply.querySelector("a");
     expect(link).not.toBeNull();
-    expect(link.getAttribute("href")).toBe("https://docs.karta.sh");
+    expect(link.getAttribute("href")).toBe("https://docs.dharta.sh");
     expect(link.getAttribute("rel")).toBe("noopener noreferrer");
     expect(link.textContent).toBe("docs");
     expect(reply.querySelector("code")?.textContent).toBe("git push");
@@ -190,7 +190,7 @@ describe("mountInlineAgent", () => {
       sendMessage() {
         return (async function* () {
           yield { type: "thinking", text: "let me think about privacy" };
-          yield { type: "tool_use", tool: "WebFetch", input: { url: "https://docs.karta.sh/x" } };
+          yield { type: "tool_use", tool: "WebFetch", input: { url: "https://docs.dharta.sh/x" } };
           await gate; // hold the stream open so we can observe the in-flight status
           yield { type: "message", text: "Answer." };
           yield { type: "done" };
@@ -198,8 +198,8 @@ describe("mountInlineAgent", () => {
       },
     };
     const agent = mountInlineAgent({ input: "#in", output: "#out", createClient: () => client });
-    const reply = () => els.output.querySelector(".karta-msg--agent");
-    const dots = () => els.output.querySelector(".karta-typing");
+    const reply = () => els.output.querySelector(".dharta-msg--agent");
+    const dots = () => els.output.querySelector(".dharta-typing");
 
     const p = agent.send("is it private?");
     await new Promise((r) => setTimeout(r, 0)); // let the stream run up to the gate
@@ -209,7 +209,7 @@ describe("mountInlineAgent", () => {
     expect(reply().textContent).toBe("Searching the docs…");
     expect(dots()).not.toBeNull();
     expect(els.output.textContent).not.toContain("let me think");
-    expect(els.output.textContent).not.toContain("docs.karta.sh/x");
+    expect(els.output.textContent).not.toContain("docs.dharta.sh/x");
     expect(els.output.textContent).not.toContain("WebFetch");
 
     release();
@@ -228,10 +228,10 @@ describe("mountInlineAgent", () => {
 
     await agent.send("q");
 
-    const reply = els.output.querySelector(".karta-msg--agent");
+    const reply = els.output.querySelector(".dharta-msg--agent");
     expect(reply.classList.contains("is-error")).toBe(true);
     expect(reply.textContent).toContain("rate limited");
-    const escalate = reply.querySelector("a.karta-escalate");
+    const escalate = reply.querySelector("a.dharta-escalate");
     expect(escalate).not.toBeNull();
     expect(escalate.getAttribute("href")).toBe("mailto:help@example.com");
   });
@@ -253,7 +253,7 @@ describe("mountInlineAgent", () => {
 
     await agent.send("q");
 
-    const reply = els.output.querySelector(".karta-msg--agent");
+    const reply = els.output.querySelector(".dharta-msg--agent");
     expect(reply.classList.contains("is-error")).toBe(true);
     expect(reply.textContent).toContain("network down");
   });
@@ -359,7 +359,7 @@ describe("mountInlineAgent", () => {
     expect(els.output.querySelector(".mine-user").textContent).toBe("hey");
     expect(els.output.querySelector(".mine-agent").textContent).toBe("themed");
     // Default classes are NOT used when hooks override them.
-    expect(els.output.querySelector(".karta-msg--user")).toBeNull();
+    expect(els.output.querySelector(".dharta-msg--user")).toBeNull();
   });
 
   it("forwards identity and contextFn into the client config", async () => {
@@ -408,8 +408,8 @@ describe("mountInlineAgent", () => {
         },
       };
       const agent = mountInlineAgent({ input: "#in", output: "#out", createClient: () => client });
-      const text = () => els.output.querySelector(".karta-msg--agent").textContent;
-      const dots = () => els.output.querySelector(".karta-typing");
+      const text = () => els.output.querySelector(".dharta-msg--agent").textContent;
+      const dots = () => els.output.querySelector(".dharta-typing");
 
       const p = agent.send("hi");
       await vi.advanceTimersByTimeAsync(0); // process the first warming event
@@ -458,8 +458,8 @@ describe("mountInlineAgent", () => {
     await new Promise((r) => setTimeout(r, 0));
 
     expect(client.openedWith).toBe("sess-123"); // adopted the stored session
-    const user = els.output.querySelector(".karta-turn--user .karta-msg--user");
-    const agent = els.output.querySelector(".karta-turn--agent .karta-msg--agent");
+    const user = els.output.querySelector(".dharta-turn--user .dharta-msg--user");
+    const agent = els.output.querySelector(".dharta-turn--agent .dharta-msg--agent");
     expect(user.textContent).toBe("what orgs do I have?");
     // Assistant text is replayed through renderMarkdown (bold -> <strong>).
     expect(agent.querySelector("strong")?.textContent).toBe("Acme");

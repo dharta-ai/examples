@@ -9,11 +9,11 @@ const port = Number(process.env.PORT || 5051);
 const publicDir = path.join(__dirname, "public");
 
 const config = {
-  embedKey: requiredEnv("KARTA_EMBED_KEY"),
-  identitySecret: requiredEnv("KARTA_IDENTITY_SECRET"),
-  agentRef: process.env.KARTA_AGENT_REF || "coffeeco/support-bot",
-  baseUrl: process.env.KARTA_BASE_URL || "https://agent.karta.sh",
-  widgetSrc: process.env.KARTA_WIDGET_SRC || "https://cdn.karta.sh/widget/v1/karta.js",
+  embedKey: requiredEnv("DHARTA_EMBED_KEY"),
+  identitySecret: requiredEnv("DHARTA_IDENTITY_SECRET"),
+  agentRef: process.env.DHARTA_AGENT_REF || "coffeeco/support-bot",
+  baseUrl: process.env.DHARTA_BASE_URL || "https://agent.dharta.sh",
+  widgetSrc: process.env.DHARTA_WIDGET_SRC || "https://cdn.dharta.sh/widget/v1/dharta.js",
 };
 
 // Stand-in for your real authenticated user. In production this comes from
@@ -32,12 +32,12 @@ http.createServer((req, res) => {
     return;
   }
 
-  if (req.method === "GET" && url.pathname === "/api/karta-identity") {
+  if (req.method === "GET" && url.pathname === "/api/dharta-identity") {
     sendJson(res, identityResponse(identityToken(signedInUser.id)));
     return;
   }
 
-  if (req.method === "POST" && url.pathname === "/api/karta-step-up") {
+  if (req.method === "POST" && url.pathname === "/api/dharta-step-up") {
     // Replace this branch with your own MFA/passkey/password confirmation.
     sendJson(res, identityResponse(stepUpIdentityToken(signedInUser.id)));
     return;
@@ -50,10 +50,10 @@ http.createServer((req, res) => {
 
 function renderIndex() {
   return fs.readFileSync(path.join(publicDir, "index.html"), "utf8")
-    .replaceAll("__KARTA_BASE_URL__", jsString(config.baseUrl))
-    .replaceAll("__KARTA_AGENT_REF__", jsString(config.agentRef))
-    .replaceAll("__KARTA_EMBED_KEY__", jsString(config.embedKey))
-    .replaceAll("__KARTA_WIDGET_SRC__", jsString(config.widgetSrc));
+    .replaceAll("__DHARTA_BASE_URL__", jsString(config.baseUrl))
+    .replaceAll("__DHARTA_AGENT_REF__", jsString(config.agentRef))
+    .replaceAll("__DHARTA_EMBED_KEY__", jsString(config.embedKey))
+    .replaceAll("__DHARTA_WIDGET_SRC__", jsString(config.widgetSrc));
 }
 
 function identityResponse(token) {

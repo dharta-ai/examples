@@ -1,17 +1,17 @@
-# Karta examples
+# Dharta examples
 
-Runnable, copy-pasteable examples for [Karta](https://karta.sh), in four registers:
+Runnable, copy-pasteable examples for [Dharta](https://dharta.sh), in four registers:
 
-- **`agents/`** - agents you publish on Karta (a native harness instruction file plus `karta.toml`, deployed with `git push karta main`).
-- **`artifacts/`** - Agent Apps that each produce one Artifact, ordered from a Markdown file to recursive child Agent Apps. These examples require an Artifact-capable Karta release.
-- **`integration/`** - Karta agents you embed in your own product (the widget, the headless client, and per-user history with verified identity).
+- **`agents/`** - agents you publish on Dharta (a native harness instruction file plus `dharta.toml`, deployed with `git push dharta main`).
+- **`artifacts/`** - Agent Apps that each produce one Artifact, ordered from a Markdown file to recursive child Agent Apps. These examples require an Artifact-capable Dharta release.
+- **`integration/`** - Dharta agents you embed in your own product (the widget, the headless client, and per-user history with verified identity).
 - **`templates/`** - repository layouts for teams building an Agent App as a product, including the surrounding web, API, data, and integration services.
 
-Every example runs against the **public product only** (`cdn.karta.sh`, `agent.karta.sh`, and the published npm SDKs). None of them reference an internal service, so each one breaks only in ways a customer would also hit - and each one runs on a plain `git clone`.
+Every example runs against the **public product only** (`cdn.dharta.sh`, `agent.dharta.sh`, and the published npm SDKs). None of them reference an internal service, so each one breaks only in ways a customer would also hit - and each one runs on a plain `git clone`.
 
 ## Status
 
-Scaffolding. Examples are landing incrementally per [RFC 0020](https://github.com/karta-sh/karta). See the table below as it fills in.
+Scaffolding. Examples are landing incrementally per [RFC 0020](https://github.com/dharta-sh/dharta). See the table below as it fills in.
 
 ## Which example do I want?
 

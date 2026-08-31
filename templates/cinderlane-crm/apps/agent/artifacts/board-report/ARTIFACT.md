@@ -18,5 +18,5 @@ details at the minimum level approved for the audience.
 
 Produce Markdown for this release's `board-report` Type. If the product later
 needs an interactive presentation, add a separately versioned Type whose
-runner serves HTML over Karta's assigned loopback port. Use `type_id`
+runner serves HTML over Dharta's assigned loopback port. Use `type_id`
 `board-report` when designating this Artifact.

@@ -1,6 +1,6 @@
 """SRE incident tools, exposed to the agent as an MCP stdio server.
 
-Karta's Claude Code harness natively loads the agent folder's `.mcp.json`
+Dharta's Claude Code harness natively loads the agent folder's `.mcp.json`
 (setting_sources = project/local), so these three tools appear to the agent as
 `mcp__sre-tools__get_metrics`, `mcp__sre-tools__get_recent_deploys`, and
 `mcp__sre-tools__get_diff`. They query the same fixtures the incident dashboard
@@ -9,7 +9,7 @@ shows. Run standalone with `python3 tools/sre_tools.py` (speaks MCP over stdio).
 This is a **zero-dependency** MCP server: it speaks the Model Context Protocol
 stdio transport (newline-delimited JSON-RPC 2.0) using only the Python standard
 library. No `mcp`/FastMCP package, no `pip install`, no network — so it runs
-anywhere `python3` does: `karta dev` locally, a plain `git clone`, or in
+anywhere `python3` does: `dharta dev` locally, a plain `git clone`, or in
 production, with nothing to provision first.
 
 The tool logic lives in `sre_data.py` (pure stdlib) so it stays unit-testable
