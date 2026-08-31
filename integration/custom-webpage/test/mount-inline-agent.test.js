@@ -363,7 +363,7 @@ describe("mountInlineAgent", () => {
   });
 
   it("forwards identity and contextFn into the client config", async () => {
-    // RFC 0023 P1+P2: a signed-in host hands the module a verified identity and
+    // A signed-in host hands the module a verified identity and
     // a per-turn contextFn; the module must thread both into the client it
     // builds (the client envelopes context and upgrades the token's `sub`).
     dom();

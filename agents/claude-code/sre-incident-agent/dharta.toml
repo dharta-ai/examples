@@ -12,6 +12,6 @@ type = "claude-code"
 # Dharta's Claude harness loads from .mcp.json — no build step, no setup script,
 # and no packages to install (it uses only the Python standard library).
 
-# --- Environment (declare-or-bind, RFC 0013) ------------------------------
+# --- Environment (declare-or-bind) ----------------------------------------
 # This example needs no secrets or external services.
 [env]

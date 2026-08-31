@@ -4,11 +4,11 @@ name = "genui-concierge-claude-code"
 # Deploy gate. Only agents with deploy = true ship on `dharta deploy`.
 deploy = true
 
-# --- Harness (RFC 0035) ---------------------------------------------------
+# --- Harness --------------------------------------------------------------
 [harness]
 type = "claude-code"
 
-# --- Generative UI (RFC 0056) ---------------------------------------------
+# --- Generative UI --------------------------------------------------------
 # Opting in here injects the generative-ui skill into this agent's harness and
 # tells Dharta which catalog + components the agent may render.
 #
@@ -30,5 +30,5 @@ components = [
   { name = "canvasBars", tier = 3 },
 ]
 
-# --- Environment (declare-or-bind, RFC 0013) ------------------------------
+# --- Environment (declare-or-bind) ----------------------------------------
 [env]

@@ -15,8 +15,8 @@ core production flow.
 | 07 | `connected-analysis` | Connected application | Execution-time authorization to an external API or database. |
 | 08 | `delegated-researcher` | Child Agent App | Headless delegation, lineage, status, and optional new-tab interaction. |
 
-Folders 01-04 are implemented and validated against the RFC 0061 branch. They
-become deployable when that Artifact-capable Dharta release is available. Later
+Folders 01-04 are implemented and validated. They become deployable when an
+Artifact-capable Dharta release is available. Later
 rows are the acceptance ladder for executable-Artifact milestones and
 intentionally have no folder yet.
 

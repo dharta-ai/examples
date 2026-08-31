@@ -4,15 +4,15 @@ name = "genui-concierge-deepagents"
 # Deploy gate. Only agents with deploy = true ship on `dharta deploy`.
 deploy = true
 
-# --- Harness (RFC 0035) ---------------------------------------------------
+# --- Harness --------------------------------------------------------------
 [harness]
 type = "deepagents"
 version = "0.1"
 
-# --- Generative UI (RFC 0056) ---------------------------------------------
+# --- Generative UI --------------------------------------------------------
 # Same registration as the claude-code example - the emission skill is injected
 # into the deepagents harness (.deepagents/skills) instead, proving the skill is
-# harness-agnostic (RFC 0056 cross-harness injection).
+# harness-agnostic across supported harnesses.
 [genui]
 catalog_id = "sh.dharta/basic"
 bundle = "genui/components.js"
@@ -21,5 +21,5 @@ components = [
   { name = "canvasBars", tier = 3 },
 ]
 
-# --- Environment (declare-or-bind, RFC 0013) ------------------------------
+# --- Environment (declare-or-bind) ----------------------------------------
 [env]

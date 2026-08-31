@@ -18,7 +18,7 @@ deploy = true
 # buildpack is set; omit for harness-only agents.
 # entry_point = "app:app"
 
-# --- Harness (RFC 0035) ---------------------------------------------------
+# --- Harness --------------------------------------------------------------
 # The agent runtime this agent runs on. `type` is fixed for the life of the
 # agent (switching harness = a new agent). `version` is optional: a range
 # like "2" resolves to the latest matching version Dharta supports at deploy
@@ -28,7 +28,7 @@ deploy = true
 type = "opencode"
 version = "1"
 
-# --- Environment (declare-or-bind, RFC 0013) ------------------------------
+# --- Environment (declare-or-bind) ----------------------------------------
 # Names this agent needs. Bind locally in .env, in prod via `dharta env set`.
 # A required var with no prod binding fails the build.
 [env]

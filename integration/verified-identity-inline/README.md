@@ -70,7 +70,7 @@ Reload and it still knows her — the durable workspace is keyed on the verified
   never instructions).
 - **Acting on their behalf (advanced).** To let the agent *do* things for the user
   — "show me *my* orders", "cancel *my* subscription" — expose your backend as an
-  **MCP** the agent calls, scoped to the verified `sub` (RFC 0015). This example
+  **MCP** the agent calls, scoped to the verified `sub`. This example
   stops at verified identity + per-user memory + context, which is the solid,
   fully-supported base; the MCP step builds on top of it.
 

@@ -11,7 +11,7 @@ Every example runs against the **public product only** (`cdn.dharta.sh`, `agent.
 
 ## Status
 
-Scaffolding. Examples are landing incrementally per [RFC 0020](https://github.com/dharta-sh/dharta). See the table below as it fills in.
+Scaffolding. Examples are landing incrementally. See the table below as it fills in.
 
 ## Which example do I want?
 

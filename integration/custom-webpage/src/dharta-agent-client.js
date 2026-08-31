@@ -354,7 +354,7 @@ var ManagedAgentsTransport = class {
   async postUserMessage(sessionId, text) {
     await this.postEvent(sessionId, { type: "user.message", text });
   }
-  // RFC 0030 — `decision` is the harness's own option id (approve_once /
+  // `decision` is the harness's own option id (approve_once /
   // approve_session / deny), relayed verbatim; the data plane maps it to the
   // harness decision (and persists approve_session). Older callers' boolean is
   // gone, but the data plane still accepts "allow" as a back-compat alias.
@@ -368,7 +368,7 @@ var ManagedAgentsTransport = class {
   async interrupt(sessionId) {
     await this.postEvent(sessionId, { type: "user.interrupt" });
   }
-  // The end-user's past conversations for a sidebar (RFC 0015 Phase 2).
+  // The end-user's past conversations for a sidebar.
   // `endUser` scopes the list; the server treats it as authoritative only
   // for an anonymous caller (a verified token uses its signed subject).
   async listSessions(endUser) {
@@ -438,7 +438,7 @@ var ManagedAgentsTransport = class {
     const url = `${this.base()}/${encodeURIComponent(sessionId)}/events`;
     await this.authedJson(url, { method: "POST", jsonBody: payload });
   }
-  // RFC 0015 Phase 3: stage an end-user upload for the session. Returns the
+  // Stage an end-user upload for the session. Returns the
   // workspace-relative path the server assigned (the bytes are injected into
   // the microVM workspace on the next turn). `contentBase64` is the file bytes.
   async uploadFile(sessionId, name, contentBase64) {
@@ -747,7 +747,7 @@ var DhartaAgentClient = class {
     }
     yield* ma.streamTurn(sid, fromSeq, signal);
   }
-  // The RFC 0012 buffer extension: wrap the outgoing wire text with the
+  // Wrap the outgoing wire text with the
   // host's current context. Applied per turn (the host's state changes
   // between turns) and only on the wire — callers render `text` as the
   // user bubble. A throwing or empty contextFn degrades to plain text:
@@ -808,7 +808,7 @@ ${text}`;
     this._sessionId = sessionId;
     return this.ma.loadSessionCursor(sessionId);
   }
-  // The end-user's past conversations (RFC 0015 Phase 2), newest first, for a
+  // The end-user's past conversations, newest first, for a
   // session sidebar. Scoped by the client's identity (the anonymous visitor id
   // or the verified subject). Empty for the Responses transport.
   async listSessions() {
@@ -851,7 +851,7 @@ ${text}`;
   // tool and continues the turn on the same session; a caller should
   // stream() afterward to read the continuation. `decision` is the harness
   // option id from the event's `options` (approve_once / approve_session /
-  // deny), relayed verbatim — the harness owns persistence (RFC 0030).
+  // deny), relayed verbatim — the harness owns persistence.
   async confirmTool(requestId, decision) {
     this.assertOpen();
     if (!this.ma) {
@@ -873,7 +873,7 @@ ${text}`;
     if (!this.ma || !this._sessionId) return;
     await this.ma.interrupt(this._sessionId);
   }
-  // RFC 0015 Phase 3: upload a file to the session. The bytes (`contentBase64`)
+  // Upload a file to the session. The bytes (`contentBase64`)
   // are staged server-side and injected into the agent's microVM working
   // directory on the next turn; returns the workspace-relative path. Creates a
   // session first if none exists. Managed Agents only.
@@ -889,7 +889,7 @@ ${text}`;
     if (!this._sessionId) await this.createSession();
     return this.ma.uploadFile(this._sessionId, name, contentBase64);
   }
-  // RFC 0015 Phase 5: per-request headers for the MCP App proxy host
+  // Per-request headers for the MCP App proxy host
   // (assistant-ui's McpAppsRemoteHost). The bearer token authenticates the
   // relay; `X-Dharta-Session` scopes it to the active session's microVM (which
   // holds the MCP connection). Errors degrade to no auth header — the proxy
