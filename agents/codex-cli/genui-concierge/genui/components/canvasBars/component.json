@@ -1,0 +1,22 @@
+{
+  "tier": 3,
+  "props_schema": {
+    "type": "object",
+    "properties": {
+      "bars": { "type": "array" },
+      "title": { "type": "string" }
+    }
+  },
+  "events": {
+    "bar_selected": {
+      "cadence": "agent_action",
+      "context_schema": {
+        "type": "object",
+        "properties": {
+          "label": { "type": "string" },
+          "value": { "type": "number" }
+        }
+      }
+    }
+  }
+}

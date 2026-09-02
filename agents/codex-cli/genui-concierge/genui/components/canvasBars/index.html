@@ -1,0 +1,92 @@
+<!--
+  canvasBars - a Tier-3 generative-UI component (RFC 0056).
+
+  Tier 3 is builder HTML and JavaScript running in a sandboxed iframe: opaque
+  origin, no parent DOM, and a per-component CSP that blocks all network access.
+  Use it when the drawing is imperative and main-thread, which is exactly what a
+  <canvas> is and what Tier-2 remote-DOM cannot carry.
+
+  This file is a FRAGMENT, not a whole document. Dharta wraps it in its own
+  document with the CSP, the stylesheet, and the bridge already in place, so do
+  not add <!doctype>, <html>, <head>, or <body>.
+
+  The bridge Dharta injects before this runs:
+    window.dharta.data          the component's resolved props
+    window.dharta.emit(n, ctx)  raise a declared event back to the agent
+
+  Declared in component.json:
+    props  : bars (array of { label, value, color? }), title (string)
+    events : bar_selected -> { label, value }, cadence agent_action
+-->
+<div id="wrap">
+  <div id="title"></div>
+  <canvas id="chart" width="460" height="190" style="width:100%;max-width:460px;display:block"></canvas>
+</div>
+<script>
+(function () {
+  var data = (window.dharta && window.dharta.data) || {};
+  var bars = Array.isArray(data.bars) ? data.bars.slice(0, 24) : [];
+
+  if (typeof data.title === "string" && data.title) {
+    var heading = document.getElementById("title");
+    heading.textContent = data.title;
+    heading.setAttribute("style", "font:600 12px ui-sans-serif,system-ui,sans-serif;color:#09090b;padding:0 0 6px 2px");
+  }
+
+  var canvas = document.getElementById("chart");
+  var ctx = canvas.getContext("2d");
+  var W = canvas.width;
+  var H = canvas.height;
+  var PAD = 26;
+
+  var values = bars.map(function (bar) { return Number(bar && bar.value) || 0; });
+  var max = Math.max.apply(null, values.concat([1]));
+  var slot = bars.length ? (W - PAD * 2) / bars.length : 0;
+  var hitboxes = [];
+
+  bars.forEach(function (bar, i) {
+    var height = (values[i] / max) * (H - PAD * 2);
+    var x = PAD + i * slot + 6;
+    var w = Math.max(slot - 12, 1);
+    var y = H - PAD - height;
+    hitboxes.push({ x: x, y: y, w: w, label: String((bar && bar.label) || ""), value: values[i] });
+
+    ctx.fillStyle = typeof bar.color === "string" ? bar.color : "#6366f1";
+    ctx.beginPath();
+    if (ctx.roundRect) ctx.roundRect(x, y, w, height, 4); else ctx.rect(x, y, w, height);
+    ctx.fill();
+
+    ctx.textAlign = "center";
+    ctx.fillStyle = "#52525b";
+    ctx.font = "11px ui-sans-serif, system-ui, sans-serif";
+    ctx.fillText(String((bar && bar.label) || ""), x + w / 2, H - PAD + 14);
+    ctx.fillStyle = "#09090b";
+    ctx.font = "600 11px ui-sans-serif, system-ui, sans-serif";
+    ctx.fillText(String(values[i]), x + w / 2, y - 5);
+  });
+
+  if (!bars.length) {
+    ctx.fillStyle = "#52525b";
+    ctx.font = "12px ui-sans-serif, system-ui, sans-serif";
+    ctx.textAlign = "center";
+    ctx.fillText("No data", W / 2, H / 2);
+    return;
+  }
+
+  // A click on a bar round-trips to the agent as the declared bar_selected
+  // event. postMessage to the host is the only channel out of this frame.
+  canvas.style.cursor = "pointer";
+  canvas.addEventListener("click", function (event) {
+    var box = canvas.getBoundingClientRect();
+    var px = (event.clientX - box.left) * (W / box.width);
+    var py = (event.clientY - box.top) * (H / box.height);
+    for (var i = 0; i < hitboxes.length; i++) {
+      var hit = hitboxes[i];
+      if (px >= hit.x && px <= hit.x + hit.w && py >= hit.y && py <= H - PAD) {
+        window.dharta.emit("bar_selected", { label: hit.label, value: hit.value });
+        break;
+      }
+    }
+  });
+})();
+</script>
