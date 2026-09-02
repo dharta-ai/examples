@@ -1,25 +1,53 @@
 # --- Identity -------------------------------------------------------------
+# This agent's name, unique within your Dharta org. Deploying again with the
+# same name OVERWRITES that agent. Lowercase letters, digits, hyphens.
 name = "genui-concierge-deepagents"
 
-# Deploy gate. Only agents with deploy = true ship on `dharta deploy`.
+# Deploy gate. Only agents with deploy = true ship on `dharta deploy` /
+# `git push dharta`. Absent or false = configured but not deployed.
 deploy = true
 
 # --- Harness --------------------------------------------------------------
+# The agent runtime this agent runs on. `type` is fixed for the life of the
+# agent (switching harness = a new agent). `version` is optional: a range
+# resolves to the latest matching version Dharta supports at deploy time; omit
+# it for the curated default; pin an exact version only when you need
+# determinism (it must be one Dharta supports - `dharta deploy` checks).
 [harness]
 type = "deepagents"
 version = "0.1"
 
-# --- Generative UI --------------------------------------------------------
-# Same registration as the claude-code example - the emission skill is injected
-# into the deepagents harness (.deepagents/skills) instead, proving the skill is
-# harness-agnostic across supported harnesses.
+# --- Generative UI (RFC 0056) ---------------------------------------------
+# Opting in here injects Dharta's `dharta-generative-ui` skill into this agent's
+# harness and tells Dharta which catalog and components the agent may render.
+# No [genui] section means the agent answers in text only and pays no token cost
+# for a catalog.
+#
+#   catalog_id - a stable id for THIS agent's catalog. Dharta merges it with the
+#                built-in `sh.dharta/basic` set, so a surface that declares this
+#                id can use both the built-ins and the components below.
+#   version    - bump whenever the component list changes (integer, >= 1).
+#   bundle     - the built catalog. Required once any component is tier >= 2.
+#                `dharta genui build` writes it and records bundle_sha256 here.
+#                Do not hand-edit the digest: the deploy verifies it against the
+#                bundle's bytes.
+#   components - each component and its minimum trust tier: 1 declarative and
+#                host-rendered, 2 remote-DOM worker, 3 sandboxed iframe.
 [genui]
-catalog_id = "sh.dharta/basic"
-bundle = "genui/components.js"
-components = [
-  { name = "pentagraph", tier = 2 },
-  { name = "canvasBars", tier = 3 },
-]
+catalog_id = "examples.dharta/genui-concierge"
+version = 1
+enabled = true
+bundle = "genui/bundle.json"
+components = [{ name = "pentagraph", tier = 2 }, { name = "canvasBars", tier = 3 }]
+
+# Build-time only: where `dharta genui build` reads component sources from. It
+# is a CLI concern, so it lives in its own sub-table and never reaches the
+# release contract.
+[genui.build]
+source = "genui/components"
 
 # --- Environment (declare-or-bind) ----------------------------------------
+# Names this agent needs. Bind locally in .env, in prod via `dharta env set`.
+# A required var with no prod binding fails the build.
 [env]
+# SUPPORT_DB_URL = { required = false, description = "Support database DSN" }

@@ -20,7 +20,10 @@ Scaffolding. Examples are landing incrementally. See the table below as it fills
 | Ship your first agent in 60 seconds | `agents/claude-code/hello-world` | n/a |
 | Ship the same hello-world agent on Deep Agents Code | `agents/deepagents/hello-world` | n/a |
 | Ship the same hello-world agent on Goose | `agents/goose/hello-world` | n/a |
+| Ship the same hello-world agent on OpenCode | `agents/opencode/hello-world` | n/a |
 | Ship the same hello-world agent on Codex CLI | `agents/codex-cli/hello-world` | n/a |
+| Answer with interactive UI - forms, cards, and two custom charts | `agents/claude-code/genui-concierge` | n/a |
+| Ship that same generative-UI agent on another harness | `agents/deepagents/genui-concierge`, `agents/goose/genui-concierge`, `agents/opencode/genui-concierge`, `agents/codex-cli/genui-concierge` | n/a |
 | Learn the Artifact flow with one Markdown file | `artifacts/01-hello-world-markdown` | n/a |
 | Install the dependencies (pip/npm) your agent needs before it runs | `agents/claude-code/custom-environment` | n/a |
 | Give an agent custom tools (MCP) and a workspace of data to investigate | `agents/claude-code/sre-incident-agent` | n/a |

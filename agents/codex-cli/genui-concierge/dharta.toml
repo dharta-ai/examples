@@ -1,7 +1,7 @@
 # --- Identity -------------------------------------------------------------
 # This agent's name, unique within your Dharta org. Deploying again with the
 # same name OVERWRITES that agent. Lowercase letters, digits, hyphens.
-name = "genui-concierge-claude-code"
+name = "genui-concierge-codex-cli"
 
 # Deploy gate. Only agents with deploy = true ship on `dharta deploy` /
 # `git push dharta`. Absent or false = configured but not deployed.
@@ -14,8 +14,8 @@ deploy = true
 # it for the curated default; pin an exact version only when you need
 # determinism (it must be one Dharta supports - `dharta deploy` checks).
 [harness]
-type = "claude-code"
-version = "2"
+type = "codex-cli"
+version = "0.133"
 
 # --- Generative UI (RFC 0056) ---------------------------------------------
 # Opting in here injects Dharta's `dharta-generative-ui` skill into this agent's
