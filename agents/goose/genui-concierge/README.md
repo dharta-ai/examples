@@ -17,6 +17,7 @@ genui-concierge/
   dharta.toml               [genui] registration and [genui.build] source
   AGENTS.md
   .goose/dharta.jsonc       harness config
+  genui/bundle.json         the built catalog (generated, committed)
   genui/components/
     pentagraph/
       component.json        tier, props schema, events
@@ -30,21 +31,22 @@ Dharta injects the `dharta-generative-ui` skill itself, so this folder ships no
 copy of it. `AGENTS.md` covers only what the skill cannot know: when this
 agent should emit a surface, and what its own two components do.
 
-## Build the bundle, then deploy
+## Rebuild after you change a component
 
-`dharta.toml` declares `bundle = "genui/bundle.json"`, and that file is generated
-rather than hand-written. Build it before your first deploy, and again after any
-change under `genui/components/`:
+`genui/bundle.json` is compiled from `genui/components/`, and its digest is
+recorded as `bundle_sha256` in `dharta.toml`. Both are committed here, so the
+example deploys as it stands. After any change under `genui/components/`:
 
 ```sh
-dharta genui build     # writes genui/bundle.json, records bundle_sha256
+dharta genui build     # rewrites genui/bundle.json, re-records bundle_sha256
 dharta genui check     # verifies the file, its digest, and its contents
 dharta deploy
 ```
 
-Commit both the bundle and the digest. A release is accepted only when the
+Commit the bundle and the digest together. A release is accepted only when the
 bundle's bytes hash to the recorded `bundle_sha256`, and `dharta deploy` refuses
-before it uploads anything if they disagree.
+before it uploads anything if they disagree. The build is reproducible: rebuilding
+unchanged sources gives a byte-identical file and an unchanged digest.
 
 ## Try it
 

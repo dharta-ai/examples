@@ -39,6 +39,7 @@ version = 1
 enabled = true
 bundle = "genui/bundle.json"
 components = [{ name = "pentagraph", tier = 2 }, { name = "canvasBars", tier = 3 }]
+bundle_sha256 = "66fd7171b9f9898bb231d463eb3035d74d7975de0ba4e05ff997eaf0e934e0cb"
 
 # Build-time only: where `dharta genui build` reads component sources from. It
 # is a CLI concern, so it lives in its own sub-table and never reaches the
